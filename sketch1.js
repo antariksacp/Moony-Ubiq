@@ -1,9 +1,10 @@
 /*
+ * Moon Phases 101 by Carisa Antariksa
+ *
  * Ubiquitous Computing - Digital Futures, OCAD University
  * Kate Hartman / Nick Puckett
  *
- * Uses the quantum random number generator at http://qrng.anu.edu.au/API/api-demo.php
- * to pull a set of quantum randoms
+ * PubNub to query the Wolfram Conversation API 
  *
  */
 
@@ -18,6 +19,9 @@ var subKey = 'sub-c-fee5c592-e6a6-11e8-a9bc-3e610c0bb465';
 //moon phases array
 var moonPhase = []
 var nmoon, wncrescent, lastq, wngibbous, fmoon, wxgibbous, firstq, wxcrescent;
+
+//channel 
+var channelName = "Wolfram";
 
 function preload() {
   nmoon = loadImage("moon1.png");
@@ -52,6 +56,18 @@ function setup() {
       noStroke();
       ellipse(x, y, r*2, r*2);
     }
+
+       // initialize pubnub
+  	dataServer = new PubNub(
+  	{
+    publish_key   : pubKey,  //get these from the pubnub account online
+    subscribe_key : subKey,
+    ssl: true  //enables a secure connection. This option has to be used if using the OCAD webspace
+  	});
+
+  //attach callbacks to the pubnub object to handle messages and connections
+ 	dataServer.addListener({ message: readIncoming})
+  	dataServer.subscribe({channels: [channelName]});
 }
     //noStroke();
     //fill(255);  //read the color values from the message
@@ -59,14 +75,32 @@ function setup() {
     //text("Click to get "+howManyToAsk+" quantum random Numbers", 5, height/2);
 
 function draw(){
-    image(nmoon, 1119, 398);
-    image(wncrescent, 1030, 606);
+    image(nmoon, 1170, 398, nmoon.width / 2, nmoon.height /2);
+    image(wncrescent, 1000, 606, wncrescent.width / 2, wncrescent.height /2);
+    image(lastq, 719, 680, lastq.width / 2, lastq.height / 2);
+    image(wngibbous, 450, 604, wngibbous.width / 2, wngibbous.height / 2);
+    image(fmoon, 289, 398, fmoon.width / 2, fmoon.height /2);
+    image(wxgibbous, 450, 188, wxgibbous.width / 2, wxgibbous.height / 2);
+    image(firstq, 718, 116, firstq.width / 2, firstq.height / 2);
+    image(wxcrescent, 1000, 193, wxcrescent.width / 2, wxcrescent.height / 2);
 }
 
 function mouseClicked(){
- var
+ 
 }
 
+function sendTheMessage(){
+
+}
+
+function readIncoming(inMessage) {
+
+	console.log(inMessage);
+
+	textSize(14);
+	text(inMessage.message.answer, 5, 5, height/2, 800);
+	returnedAnswer=inMessage.message.answer.split(" ");
+}
 // function mousePressed()
 // {
 // var askurl = "https://qrng.anu.edu.au/API/jsonI.php?length="+howManyToAsk+"&type=uint"+bitsToAsk;
