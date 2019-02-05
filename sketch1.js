@@ -10,9 +10,39 @@
 // var bitsToAsk = 8;  //can be 8 or 16
 // var howManyToAsk = 6;
 
+// server variables
+var dataServer;
+var pubKey = 'pub-c-b3976579-15b7-4f52-8548-26f9c70088dc';
+var subKey = 'sub-c-fee5c592-e6a6-11e8-a9bc-3e610c0bb465';
+
+//moon phases array
+var moonPhase = []
+var nmoon, wncrescent, lastq, wngibbous, fmoon, wxgibbous, firstq, wxcrescent;
+
+function preload() {
+  nmoon = loadImage("moon1.png");
+  wncrescent = loadImage("moon8.png");
+  lastq = loadImage("moon7.png");
+  wngibbous = loadImage("moon6.png");
+  fmoon = loadImage("moon5.png");
+  wxgibbous = loadImage("moon4.png");
+  firstq = loadImage("moon3.png");
+  wxcrescent = loadImage("moon2.png");
+
+  moonPhase.push(nmoon);
+  moonPhase.push(wncrescent);
+  moonPhase.push(lastq);
+  moonPhase.push(wngibbous);
+  moonPhase.push(fmoon);
+  moonPhase.push(wxgibbous);
+  moonPhase.push(firstq);
+  moonPhase.push(wxcrescent);
+
+}
+
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    background('#00003a');
+    background('#000021');
 
     for (var i = 0; i < 200; i++) {
       var x = random(width);
@@ -28,11 +58,14 @@ function setup() {
     //textSize(20);
     //text("Click to get "+howManyToAsk+" quantum random Numbers", 5, height/2);
 
-function draw()
-{
-
+function draw(){
+    image(nmoon, 1119, 398);
+    image(wncrescent, 1030, 606);
 }
 
+function mouseClicked(){
+ var
+}
 
 // function mousePressed()
 // {
