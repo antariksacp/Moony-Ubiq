@@ -14,10 +14,10 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
     background('#00003a');
 
-    for (var i = 0; i < 100; i++) {
+    for (var i = 0; i < 200; i++) {
       var x = random(width);
       var y = random(height);
-      var r = 2;
+      var r = 0.5;
       fill('#ffffff');
       noStroke();
       ellipse(x, y, r*2, r*2);
