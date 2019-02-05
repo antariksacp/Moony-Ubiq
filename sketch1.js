@@ -8,20 +8,23 @@
  *
  */
 
-// var bitsToAsk = 8;  //can be 8 or 16
-// var howManyToAsk = 6;
-
 // server variables
 var dataServer;
 var pubKey = 'pub-c-b3976579-15b7-4f52-8548-26f9c70088dc';
 var subKey = 'sub-c-fee5c592-e6a6-11e8-a9bc-3e610c0bb465';
 
-//moon phases array
-var moonPhase = []
+// moon phases array
+// var moonPhase = []
 var nmoon, wncrescent, lastq, wngibbous, fmoon, wxgibbous, firstq, wxcrescent;
 
+// //set var to call class
+// var phaseNow;
+
+//input variables
+var sendText;
+
 //channel 
-var channelName = "Wolfram";
+var channelName = "wolfram";
 
 function preload() {
   nmoon = loadImage("moon1.png");
@@ -33,14 +36,14 @@ function preload() {
   firstq = loadImage("moon3.png");
   wxcrescent = loadImage("moon2.png");
 
-  moonPhase.push(nmoon);
-  moonPhase.push(wncrescent);
-  moonPhase.push(lastq);
-  moonPhase.push(wngibbous);
-  moonPhase.push(fmoon);
-  moonPhase.push(wxgibbous);
-  moonPhase.push(firstq);
-  moonPhase.push(wxcrescent);
+  // moonPhase.push(nmoon);
+  // moonPhase.push(wncrescent);
+  // moonPhase.push(lastq);
+  // moonPhase.push(wngibbous);
+  // moonPhase.push(fmoon);
+  // moonPhase.push(wxgibbous);
+  // moonPhase.push(firstq);
+  // moonPhase.push(wxcrescent);
 
 }
 
@@ -72,7 +75,7 @@ function setup() {
   	fill(255);
   	textSize(20);
   	textStyle(BOLD);
-  	text("Moon Phases 101", 730, 500);
+  	text("Moon Phases, When?", 700, 400);
 }
     //noStroke();
     //fill(255);  //read the color values from the message
@@ -92,6 +95,69 @@ function draw(){
     // moonRange();
 }
 
+function touchStarted(){
+	if (mouseX >= 1170 && mouseY >= 398) {
+		if ( mouseX <= (1170+nmoon.width / 2) && mouseY <= (398+nmoon.height /2)) {
+			sendTheMessage("new moon");
+			console.log("Yes");
+		}
+	}
+
+	if (mouseX >= 1000 && mouseY >= 606) {
+		if ( mouseX <= (1000+wncrescent.width / 2) && mouseY <= (606+wncrescent.height /2)) {
+			
+			sendTheMessage("waning crescent");
+			console.log("Yes");
+		}
+	}
+
+	if (mouseX >= 719 && mouseY >= 680) {
+		if ( mouseX <= (719+lastq.width / 2) && mouseY <= (680+lastq.height /2)) {
+			sendTheMessage("last quarter moon");
+			console.log("Yes");
+		}
+	}
+
+	if (mouseX >= 450 && mouseY >= 604) {
+		if ( mouseX <= (450+wngibbous.width / 2) && mouseY <= (604+wngibbous.height /2)) {
+			sendTheMessage("waning gibbous");
+			console.log("Yes");
+		}
+	}
+
+	if (mouseX >= 289 && mouseY >= 398) {
+		if ( mouseX <= (289+fmoon.width / 2) && mouseY <= (398+fmoon.height /2)) {
+			sendTheMessage("full moon");
+			console.log("Yes");
+		}
+	}
+
+	if (mouseX >= 450 && mouseY >= 188) {
+		if ( mouseX <= (450+wxgibbous.width / 2) && mouseY <= (188+wxgibbous.height /2)) {
+			sendTheMessage("waxing gibbous");
+			console.log("Yes");
+		}
+	}
+
+	if (mouseX >= 718 && mouseY >= 116) {
+		if ( mouseX <= (718+firstq.width / 2) && mouseY <= (116+firstq.height /2)) {
+			sendTheMessage("first quarter moon");
+			console.log("Yes");
+		}
+	}
+
+	if (mouseX >= 1000 && mouseY >= 193) {
+		if ( mouseX <= (1000+wxcrescent.width / 2) && mouseY <= (193+wxcrescent.height /2)) {
+			sendTheMessage("waxing crescent");
+			console.log("Yes");
+		}
+	}
+
+    // for(var i = 0; i < moonPhase.length; i++){
+    // 	moonPhase[i].moonClick(mouseX,mouseY);
+    // }
+}
+
 // function moonRange(mimg,mpx,mpy,fact){
 // 	var mCycle = new Moony(mimg,mpx,mpy,fact);
 	// mCycle.translate(windowWidth,windowHeight);
@@ -106,23 +172,32 @@ function draw(){
 // 	this.x;
 // 	this.y;
 
-// 	this.moonClick = function
+// 	this.moonClick = function(mX,mY){
+	 // var d = dist(this.x,this.y,mX,mY);
+  //    var maxRadius = 10;
+  //    if(d < (maxRadius-1)){
+  //              // check if in range
+  //        print("within range");
+  //              // show phase
+  //        fill(180,0,0);
+  //        textSize(12);
+  //        text(this.name,mX,mY);
+  //        phaseNow = this.name;
+  //        // phase within range, send message to wolfram
+  //        sendTheMessage();
+  //         }
+// }
 // }
 
-function mouseClicked(){
-    // for(var i = 0; i < moonPhase.length; i++){
-    // 	moonPhase[i].moonClick(mouseX,mouseY);
-    // }
-}
 
-function sendTheMessage(){
+function sendTheMessage(message){
    // Send Data to the server to draw it in all other canvases
   dataServer.publish(
     {
       channel: channelName,
-      message:
+      message: 
       {
-        text: sendText.value()       //text: is the message parameter the function is expecting
+        text: message  //text: is the message parameter the function is expecting
       }
     });
 
@@ -134,38 +209,13 @@ function readIncoming(inMessage) {
 
 	textSize(14);
 	//text(inMessage.message.answer, 5, 5, height/2, 800);
-	text(inMessage.message.answer, 5, height/2);
+	console.log(inMessage.message.answer);
+	text(inMessage.message.answer, 650, 500, height/3, 300);
 	returnedAnswer=inMessage.message.answer.split(" ");
+
 }
 
 function whoisconnected(connectionInfo)
 {
 
 }
-
-// function mousePressed()
-// {
-// var askurl = "https://qrng.anu.edu.au/API/jsonI.php?length="+howManyToAsk+"&type=uint"+bitsToAsk;
-//
-// loadJSON(askurl,whatHappened);   //more details on this function here: https://p5js.org/reference/#/p5/loadJSON
-//
-// }
-//
-//
-// function whatHappened(returnData)
-// {
-// console.log(returnData);  //look in the console to see the structure of the returned message
-//
-//
-// background(0,200,255);		//change the background to light blue
-//
-// 	//this loop goes through the array of values returned and draws a circle for each
-// 	//the amount of circles is determined by how many randoms you ask the API to return
-// 	for(var i=0;i<returnData.data.length;i++)
-// 	{
-// 		noFill();
-// 		stroke(255);
-// 		ellipse(width/2,height/2,returnData.data[i],returnData.data[i]);
-//
-// 	}
-//
