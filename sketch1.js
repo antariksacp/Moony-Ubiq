@@ -48,7 +48,7 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
     background('#000021');
 
-    for (var i = 0; i < 200; i++) {
+    for (var i = 0; i < 200; i++) { 
       var x = random(width);
       var y = random(height);
       var r = 0.5;
@@ -57,10 +57,10 @@ function setup() {
       ellipse(x, y, r*2, r*2);
     }
 
-       // initialize pubnub
+    // initialize pubnub
   	dataServer = new PubNub(
   	{
-    publish_key   : pubKey,  //get these from the pubnub account online
+    publish_key   : pubKey,  //your keys online
     subscribe_key : subKey,
     ssl: true  //enables a secure connection. This option has to be used if using the OCAD webspace
   	});
@@ -68,6 +68,11 @@ function setup() {
   //attach callbacks to the pubnub object to handle messages and connections
  	dataServer.addListener({ message: readIncoming})
   	dataServer.subscribe({channels: [channelName]});
+
+  	fill(255);
+  	textSize(20);
+  	textStyle(BOLD);
+  	text("Moon Phases 101", 730, 500);
 }
     //noStroke();
     //fill(255);  //read the color values from the message
@@ -83,13 +88,43 @@ function draw(){
     image(wxgibbous, 450, 188, wxgibbous.width / 2, wxgibbous.height / 2);
     image(firstq, 718, 116, firstq.width / 2, firstq.height / 2);
     image(wxcrescent, 1000, 193, wxcrescent.width / 2, wxcrescent.height / 2);
+
+    // moonRange();
 }
 
+// function moonRange(mimg,mpx,mpy,fact){
+// 	var mCycle = new Moony(mimg,mpx,mpy,fact);
+	// mCycle.translate(windowWidth,windowHeight);
+	// mCycle.push(mCycle); 
+// }
+
+// function Moony(mimg,mpx,mpy,fact) {
+// 	this.image = mimg;
+// 	this.mousex = mpx;
+// 	this.mousey = mpy;
+// 	this.fact = fact;
+// 	this.x;
+// 	this.y;
+
+// 	this.moonClick = function
+// }
+
 function mouseClicked(){
- 
+    // for(var i = 0; i < moonPhase.length; i++){
+    // 	moonPhase[i].moonClick(mouseX,mouseY);
+    // }
 }
 
 function sendTheMessage(){
+   // Send Data to the server to draw it in all other canvases
+  dataServer.publish(
+    {
+      channel: channelName,
+      message:
+      {
+        text: sendText.value()       //text: is the message parameter the function is expecting
+      }
+    });
 
 }
 
@@ -98,9 +133,16 @@ function readIncoming(inMessage) {
 	console.log(inMessage);
 
 	textSize(14);
-	text(inMessage.message.answer, 5, 5, height/2, 800);
+	//text(inMessage.message.answer, 5, 5, height/2, 800);
+	text(inMessage.message.answer, 5, height/2);
 	returnedAnswer=inMessage.message.answer.split(" ");
 }
+
+function whoisconnected(connectionInfo)
+{
+
+}
+
 // function mousePressed()
 // {
 // var askurl = "https://qrng.anu.edu.au/API/jsonI.php?length="+howManyToAsk+"&type=uint"+bitsToAsk;
