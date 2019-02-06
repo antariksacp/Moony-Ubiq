@@ -72,10 +72,15 @@ function setup() {
  	dataServer.addListener({ message: readIncoming})
   	dataServer.subscribe({channels: [channelName]});
 
+  	fill('#4747c1');
+  	textFont('Trebuchet MS');
+  	textSize(10);
+  	textStyle(NORMAL);
+  	text("Refresh page before next phase", 740, 600);
   	fill(255);
   	textSize(20);
   	textStyle(BOLD);
-  	text("Moon Phases, When?", 700, 400);
+  	text("Moon Phases, When?", 720, 400);
 }
     //noStroke();
     //fill(255);  //read the color values from the message
